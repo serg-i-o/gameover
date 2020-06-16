@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+</head>
+<body>
+<table class="table table-dark" id = "playersTable">
+  <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">SteamID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Reason</th>
+    </tr>
+  </thead>
+</table>
+<script>
+
+    let playersTable = document.querySelector('#playersTable')
+    let timeout = {{update_time}}
+    let tbody = document.createElement('tbody')
+    setInterval(function(){
+
+            $.getJSON('/ban-list/', {}, function(json){
+                tbody.remove()
+                tbody = document.createElement('tbody')
+                json.forEach(function(item, i){
+                    let tr = document.createElement('tr')
+
+                    let th = document.createElement('th')
+                    th.innerHTML = i.toString()
+
+                    let td1 = document.createElement('td')
+                    td1.innerHTML = item.playerID
+
+                    let td2 = document.createElement('td')
+                    td2.innerHTML = item.comment
+
+                    let td3 = document.createElement('td')
+                    td3.innerHTML = item.reason
+
+                    tr.appendChild(th);
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+
+                    tbody.appendChild(tr)
+
+                    playersTable.appendChild(tbody)
+                })
+            })
+    }, timeout)
+</script>
+</body>
+</html>
